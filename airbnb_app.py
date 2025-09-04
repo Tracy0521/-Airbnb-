@@ -86,6 +86,7 @@ if page == "首页":
 # 其他页面保持不变...
 
 # 房源空间分布页面
+# 房源空间分布页面
 elif page == "房源空间分布":
     st.header("房源空间分布与社区特征")
     st.markdown("""
@@ -105,10 +106,22 @@ elif page == "房源空间分布":
             df = load_data("清洗并聚类后的房源数据.xlsx")# 调用数据加载函数
         st.success('数据加载成功!')
 
-        # 获取可用的选项
-        available_neighborhoods = ["全部"] # 默认包含"全部"选项
-        if 'neighborhood' in df.columns:
-            available_neighborhoods.extend(sorted(df['neighborhood'].dropna().unique().tolist()))# 去重、去空、排序后添加到选项列表
+        # 获取可用的选项 - 修改部分开始
+        available_neighborhoods = ["全部"]
+
+        # 检查多个可能的列名，与 map_visualization.py 保持一致
+        neighborhood_col = None
+        for col in ['neighborhood', 'neighbourhood', 'neighbourhood_cleansed']:
+            if col in df.columns:
+                neighborhood_col = col
+                break
+
+        if neighborhood_col:
+            available_neighborhoods.extend(sorted(df[neighborhood_col].dropna().unique().tolist()))
+            st.sidebar.info(f"使用社区列: {neighborhood_col}")  # 可选：显示使用的列名
+        else:
+            st.sidebar.warning("未找到社区相关的列")
+        # 修改部分结束
 
         available_room_types = ["全部"]
         if 'room_type' in df.columns:
@@ -163,7 +176,12 @@ elif page == "房源空间分布":
         # 显示数据表格 - 检查列是否存在
         st.subheader("筛选结果数据")
         display_columns = []
-        for col in ['name', 'neighbourhood', 'neighborhood', 'room_type', 'price', 'review_scores_rating']:
+        # 修改部分开始：使用确定的列名
+        if neighborhood_col:
+            display_columns.append(neighborhood_col)
+        # 修改部分结束
+
+        for col in ['name', 'room_type', 'price', 'review_scores_rating']:
             if col in filtered_df.columns:
                 display_columns.append(col)
 

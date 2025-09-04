@@ -7,8 +7,7 @@ from sklearn.preprocessing import StandardScaler
 # 1. 读取数据
 # ----------------------
 # 替换为你的Excel文件路径
-# 相对路径写法（数据文件与脚本在同一文件夹下）
-file_path = "listings.xlsx"
+file_path = "listings.xlsx"  # 例如: "C:/data/listings.xlsx"
 excel_file = pd.ExcelFile(file_path)
 
 # 获取工作表名称（假设主要数据在'listings'表中）

@@ -303,25 +303,13 @@ elif page == "关于我们":
     - 价格预测模型
     
     ### 技术栈
-    - 前端: Streamlit, Plotly, Folium
-    - 数据处理: Pandas, NumPy
-    - 机器学习: Scikit-learn, XGBoost
-    - 数据可视化: Matplotlib, Seaborn
+    - 前端: Streamlit,Folium
+    - 数据处理: Pandas
+    - 机器学习: Scikit-learn, 
+    - 数据可视化: pyecharts
     
-    ### 开发团队
-    - 数据科学家: [您的名字]
-    - 开发工程师: [团队成员]
-    - UI/UX设计师: [团队成员]
     """)
 
     st.info("最后数据更新: 2023年10月")
     st.info("系统版本: v1.0")
 
-# 运行说明
-st.sidebar.markdown("---")
-st.sidebar.info("""
-### 运行说明
-1. 确保已安装所需依赖
-2. 在终端运行: `streamlit run airbnb_app.py`
-3. 在浏览器中打开显示的本地地址
-""")

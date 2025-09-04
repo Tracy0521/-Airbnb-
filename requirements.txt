@@ -5,3 +5,4 @@ scikit-learn
 requests
 openpyxl
 pyecharts
+streamlit_folium

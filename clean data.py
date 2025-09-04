@@ -83,7 +83,7 @@ df_result = df_clean.merge(
     right_index=True,
     how='left'
 )
-
+df_result = df_result.dropna(subset=['cluster_type'])
 # 保存结果到新的Excel文件
 output_path = "清洗并聚类后的房源数据.xlsx"  # 输出文件路径
 df_result.to_excel(output_path, index=False)

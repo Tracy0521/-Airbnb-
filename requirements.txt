@@ -1,5 +1,7 @@
 streamlit
 folium
-streamlit-folium
 pandas
-openpyxl  # 用于读取Excel文件
+scikit-learn
+requests
+openpyxl
+pyecharts

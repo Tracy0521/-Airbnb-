@@ -200,46 +200,76 @@ elif page == "价格特征分析":
     本页面分析纽约市Airbnb房源的价格特征，包括:
     - 不同区域的价格对比
     - 不同房型的价格分布
-    - 价格随时间的变化趋势
     """)
 
-    # 占位图表
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("各区域平均价格")
-        st.info("此处将显示柱状图，比较各区域的平均价格")
+    # 直接显示预先生成的图表文件
+    chart_path = "price_analysis.html"
 
-    with col2:
-        st.subheader("价格分布")
-        st.info("此处将显示箱线图，展示价格分布情况")
+    if os.path.exists(chart_path):
+        try:
+            # 读取HTML文件内容
+            with open(chart_path, 'r', encoding='utf-8') as f:
+                html_content = f.read()
 
-    # 价格趋势
-    st.subheader("价格趋势分析")
-    st.info("此处将显示折线图，展示价格随时间的变化趋势")
+            # 使用iframe显示图表
+            st.subheader("各社区不同房型的均价分布")
 
+            # 设置合适的宽度和高度
+            st.components.v1.html(html_content, height=850, width="90%",scrolling=True)
+
+            # 添加一些说明
+            st.markdown("""
+            **图表说明：**
+            - 该图表展示了纽约市各社区不同房型（整套房子/公寓、独立房间、共享房间）的平均价格分布
+            - 您可以使用图表右上角的工具栏进行缩放、保存图片等操作
+            - 将鼠标悬停在柱状图上可以查看具体数值
+            """)
+
+        except Exception as e:
+            st.error(f"读取图表文件时出错: {str(e)}")
+    else:
+        st.warning("价格分析图表文件不存在")
+        st.info("请确保 price_analysis.html 文件存在于 D:\\python-learn\\ 目录下")
+
+# 用户评价分析页面
 # 用户评价分析页面
 elif page == "用户评价分析":
     st.header("用户评价与口碑分析")
     st.markdown("""
     本页面分析用户对Airbnb房源的评价，包括:
     - 评分分布情况
-    - 评价关键词分析
     - 口碑与价格的关系
     """)
 
-    # 占位内容
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("评分分布")
-        st.info("此处将显示 histogram，展示评分分布")
+    # 显示用户评价分析图表
+    review_chart_path = "review_analysis.html"
 
-    with col2:
-        st.subheader("评价词云")
-        st.info("此处将显示词云图，展示高频评价词汇")
+    if os.path.exists(review_chart_path):
+        try:
+            # 读取HTML文件内容
+            with open(review_chart_path, 'r', encoding='utf-8') as f:
+                review_html_content = f.read()
 
-    # 情感分析
-    st.subheader("情感分析")
-    st.info("此处将显示情感分析结果，展示正面/负面评价比例")
+            # 使用iframe显示图表
+            st.subheader("用户评价分析图表")
+
+            # 设置合适的宽度和高度
+            st.components.v1.html(review_html_content, height=850, scrolling=True)
+
+            # 添加图表说明
+            st.markdown("""
+            **图表说明：**
+            - 该图表展示了用户评价的关键分析结果
+            - 您可以使用图表右上角的工具栏进行交互操作
+            """)
+
+        except Exception as e:
+            st.error(f"读取评价分析图表文件时出错: {str(e)}")
+    else:
+        st.warning("评价分析图表文件不存在")
+        st.info("请确保 review_analysis.html 文件存在于当前目录下")
+
+
 
 # 关于我们页面
 elif page == "关于我们":

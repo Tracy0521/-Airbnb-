@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from typing import Optional, Tuple, Dict, Iterable
 import folium
+from folium import GeoJson
 from folium.plugins import HeatMap
 
 # 默认数据源：清洗并聚类后的房源数据.xlsx（与本文件同目录）
@@ -114,19 +115,32 @@ def filter_listings(
         room_type: str = "全部",
         price_range: Tuple[float, float] = (0, 10_000),
         cluster_type: str = "全部",
-        valid_neighborhoods: Optional[Iterable[str]] = None,
 ) -> pd.DataFrame:
     """
     按地区、房型、价格区间、聚类类别过滤房源数据。
     """
     filtered = df.copy()
 
-    if neighborhood and neighborhood != "全部" and "neighborhood" in filtered.columns:
-        if valid_neighborhoods:
-            if neighborhood in set(valid_neighborhoods):
-                filtered = filtered[filtered["neighborhood"] == neighborhood]
-        else:
-            filtered = filtered[filtered["neighborhood"] == neighborhood]
+    # 调试信息：打印可用的列名
+    print(f"数据列名: {list(filtered.columns)}")
+    print(f"选择的社区: {neighborhood}")
+
+    # 检查社区列是否存在
+    neighborhood_col = None
+    for col in ['neighborhood', 'neighbourhood', 'neighbourhood_cleansed']:
+        if col in filtered.columns:
+            neighborhood_col = col
+            break
+
+    if neighborhood_col:
+        print(f"使用社区列: {neighborhood_col}")
+        print(f"可用的社区: {filtered[neighborhood_col].unique()[:10]}")  # 显示前10个社区
+
+        if neighborhood and neighborhood != "全部":
+            filtered = filtered[filtered[neighborhood_col] == neighborhood]
+            print(f"筛选后数据量: {len(filtered)}")
+    else:
+        print("警告: 未找到社区相关的列")
 
     if room_type and room_type != "全部" and "room_type" in filtered.columns:
         filtered = filtered[filtered["room_type"] == room_type]
